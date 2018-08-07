@@ -17,7 +17,7 @@ def hello_foo():
 print(">>>> route bar")
 @app.route('/bar')
 def hello_bar():
-    return 'Hello World BAR2!'
+    return 'Hello World BAR99!'
 
 if __name__ == '__main__':
     app.run(debug=True)
