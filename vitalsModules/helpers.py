@@ -1,72 +1,3 @@
-import glob
-import vitalsModules
-from pyhtml import *
-import ntpath
-from pathlib import Path
-
-# Global var
-PHOTO_FOLDER = Path("static/photos/")
-
-# from flask import Flask
-from flask import Flask, render_template, send_file
-
-# set the project root directory as the static folder, you can set others.
-# app = Flask(__name__, static_url_path='')
-app = Flask(__name__, static_url_path='/static')
-app.jinja_env.filters['zip'] = zip
-
-
-
-#######
-# web commands
-#######
-
-# default command
-@app.route('/')
-def hello_world():
-    return "Hello World!"
-
-
-# test pyhtml
-@app.route('/pyhtml')
-def hello_pyhtml():
-    return get_pyhtml_dummypage()
-
-# test yattag
-@app.route('/yattag')
-def hello_yattag():
-    return get_yattag_dummypage()
-
-
-# foo command
-@app.route('/foo')
-def hello_foo():
-    photo_list = glob.glob("photos/*")
-    print_log(photo_list)
-    output_text = 'Hello World FOO!'
-    for photo_name in photo_list:
-        print_log(photo_name)
-        output_text = output_text + photo_name
-    return output_text
-
-
-# bar command
-@app.route('/bar')
-def hello_bar():
-    return 'Hello World BAR99!'
-
-# photo template
-@app.route("/photo")
-def photo():
-
-    list_photo_values_to_display = get_photo_values_for_display()
-
-    # return render_template("photo.html", mylist = list_photo_values_to_display)
-    print_log(str(list_photo_values_to_display))
-    return render_template('photo.html', data=list_photo_values_to_display )
-
-
-
 #######
 # HELPER FUNCTIONS
 #######
@@ -77,27 +8,16 @@ import glob
 def print_log(text):
     print(">>> ", text)
 
-
-
 # get one list with all photo names
 def get_list_photo_names():
-    photo_names = []
-    for el in PHOTO_FOLDER.glob("*.jpg"): photo_names.append(el.name)
-    return photo_names
+    # TODO: move to config
+    return glob.glob('static/photos/*.jpg')
 
-def get_list_photo_urls():
-    urls= []
-    for el in PHOTO_FOLDER.glob("*.jpg"):
-        filename = el.name
-        url = PHOTO_FOLDER / filename
-        urls.append(url)
-    return urls
 
 # get one list with all image_meta_data objects
 def get_list_image_meta_data(list_photo_names):
     res_list = []
     for el in list_photo_names:
-        path = PHOTO_FOLDER / el
         res_list.append(vitalsModules.ImageMetaData(el))
     return res_list
 
@@ -178,16 +98,13 @@ def get_lat_lng_from_photo(photo_name):
 
 # key-value list, key = "photo name", val = "lat / lng tuple"
 def get_photo_values_for_display():
-    list_photo_name = get_list_photo_urls()
+    list_photo_name = get_list_photo_names()
     list_image_meta_data = get_list_image_meta_data(list_photo_name)
 
     #return zip(list_photo_name,list_image_meta_data)
     lat_lng = []
     for image_meta_data in list_image_meta_data:
         lat_lng.append(image_meta_data.get_lat_lng())
-    print_log("list_photo_name" + str(list_photo_name))
-    print_log("lat_lng" + str(lat_lng))
-
     return zip(list_photo_name,lat_lng)
 
 def test_list_access():
@@ -221,24 +138,3 @@ def get_pyhtml_dummypage():
         )
     )
     return t.render()
-
-# logging
-
-import logging
-file_handler = logging.FileHandler('app.log')
-app.logger.addHandler(file_handler)
-app.logger.setLevel(logging.INFO)
-
-
-@app.route('/loggertest', methods=['GET'])
-def loggertest():
-    app.logger.info('informing')
-    app.logger.warning('warning')
-    app.logger.error('screaming bloody murder!')
-    return "check your logs\n"
-
-
-# call of main
-if __name__ == '__main__':
-    app.run(debug=True)
-

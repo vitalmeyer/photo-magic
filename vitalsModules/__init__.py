@@ -78,3 +78,5 @@ class ImageMetaData(object):
                 if gps_longitude_ref != "E":
                     lng = 0 - lng
         return lat, lng
+
+
