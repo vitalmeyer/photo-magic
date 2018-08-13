@@ -1,29 +1,48 @@
-#######
-# HELPER FUNCTIONS
-#######
-import glob
+from pathlib import Path
+
+from models import ImageMetaData
 
 
-# simple logging routine
+def get_photo_values_for_display(photo_folder):
+    list_photo_name = get_list_photo_urls(photo_folder)
+    list_image_meta_data = get_list_image_meta_data(list_photo_name)
+
+    #return z    ip(list_photo_name, list_image_meta_data)
+    lat_lng = []
+    for image_meta_data in list_image_meta_data:
+        lat_lng.append(image_meta_data.get_lat_lng())
+    print_log("list_photo_name" + str(list_photo_name))
+    print_log("lat_lng" + str(lat_lng))
+
+    return zip(list_photo_name,lat_lng)
+
+
 def print_log(text):
     print(">>> ", text)
 
-# get one list with all photo names
-def get_list_photo_names():
-    # TODO: move to config
-    return glob.glob('static/photos/*.jpg')
+
+def get_list_photo_urls(photo_folder):
+    urls= []
+    for el in photo_folder.glob("*.jpg"):
+        filename = el.name
+        url = photo_folder / filename
+        urls.append(url)
+    return urls
 
 
-# get one list with all image_meta_data objects
+def get_list_photo_names(photo_folder):
+    photo_names = []
+    for el in photo_folder.glob("*.jpg"): photo_names.append(el.name)
+    return photo_names
+
+
 def get_list_image_meta_data(list_photo_names):
     res_list = []
     for el in list_photo_names:
-        res_list.append(vitalsModules.ImageMetaData(el))
+        res_list.append(ImageMetaData(el))
     return res_list
 
 
-
-# list of photos and lag lng data...
 def get_photo_list_lag_lng(photo_list):
     photo_list_lag_lng = []
     for el in photo_list:
@@ -32,42 +51,11 @@ def get_photo_list_lag_lng(photo_list):
     return photo_list_lag_lng
 
 
-# sollte JSON -formatiert sein (https://de.wikipedia.org/wiki/JavaScript_Object_Notation#Beispiel)
-pics = """
-{
-    {Filename : <filename>
-        {Lag: "33.2"}
-        {Lng: "44.4"}
-        {XXX: "foobar" }
-    }
-}
-"""
-# was ich brauche: URL, lag, lng in JSON,
-# zusätzlich CENTER (mittelwert lag / lng),
-# für jedes listenelement einen Icon / Marker...
-# zoom-Wert ???
-# ..
-# json_input = '{"photos": [{"src": "static/foo.jpg", "lag": "3.4", lng: "5.5"},
-#                           {"src": "static/bar.jpg", "lag": "3.5", lng: "5.6"}] }'
-# --> unnötig hier...
-# Dictionaries are built with curly brackets:
-#
-# d = {"a":1, "b":2}
-# dic = {"src": {src}, "lag:": {lag}, "lng": {lng}}
-# --> geht nicht gut...
-# multidim arrays
-# photosData = [[static/foo.jpg, 3.4, 5.5], [static/bar.jpg, 3.5, 5.6]]
-# einfache lösung für mich!
 
-# ALTERNATIVE
-# Object welches Liste mit URLs, Liste mit LAG's und Liste mit LNG's etc enthält
-# Lösung:
-# Liste von "photo-objekten"
-#
 
-# howto get metadata from photo
+
 def get_lat_lng_from_photo(photo_name):
-    meta_data = vitalsModules.ImageMetaData(photo_name)
+    meta_data = ImageMetaData(photo_name)
     # return "lat + lng = " + str(meta_data.get_lat_lng()) + " (...from " + photo_name + ")"
     # DateTime, ExifImageWidth, ExifImageHeight
     #
@@ -95,46 +83,3 @@ def get_lat_lng_from_photo(photo_name):
     # ....
 
     return str(meta_data.get_lat_lng())
-
-# key-value list, key = "photo name", val = "lat / lng tuple"
-def get_photo_values_for_display():
-    list_photo_name = get_list_photo_names()
-    list_image_meta_data = get_list_image_meta_data(list_photo_name)
-
-    #return zip(list_photo_name,list_image_meta_data)
-    lat_lng = []
-    for image_meta_data in list_image_meta_data:
-        lat_lng.append(image_meta_data.get_lat_lng())
-    return zip(list_photo_name,lat_lng)
-
-def test_list_access():
-    data = get_photo_values_for_display()
-    for n,v in zip(data[0::2], data[1::2]):
-        print(  "n=", n, "v=", v, "v0=", v[0])
-
-
-# test yattag
-def get_yattag_dummypage():
-    return "i don't like it...."
-
-
-# test pyhtml
-def get_pyhtml_dummypage():
-    t = html(
-        head(
-            title('Awesome website'),
-        ),
-        body(
-            header(
-
-            ),
-            div(
-                'Content here'
-            ),
-            footer(
-                hr,
-                'Copyright 2013'
-            )
-        )
-    )
-    return t.render()
