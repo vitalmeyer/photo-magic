@@ -1,0 +1,68 @@
+<!doctype html>
+  <head>
+
+<title>CSS Grid Template 2</title>
+ <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+
+    </style>
+
+<link rel="stylesheet" href="static/mycss.css">
+</head>
+<body>
+  <header id="pageHeader">Header</header>
+  <article id="mainArticle"><div id="map">here goes the map...</div></article>
+  <nav id="mainNav">Nav</nav>
+  <!-- <div id="siteAds">Ads</div> -->
+
+
+  <footer id="pageFooter">Footer</footer>
+</body>
+
+
+<script type="text/javascript">
+        // var username = "my username";
+
+      // This example adds a marker to indicate the position of Bondi Beach in Sydney,
+      // Australia.
+      function initMap() {
+         //alert(username)
+        // alert( 'Hello, world!' );
+        // alert(mylist);
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: {lat: 45.74846, lng: 4.84671}
+        });
+
+        // var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+
+         {%
+            for n,v in list_photo_values_to_display
+
+          %}
+         var icon = {
+            url: "{{ n|replace("\\", "/") }}", // url - problem...
+            scaledSize: new google.maps.Size(50, 50), // scaled size
+            origin: new google.maps.Point(0,0), // origin
+            anchor: new google.maps.Point(0, 0) // anchor
+        };
+        var beachMarker = new google.maps.Marker({
+          position: {lat: {{ v[0] }}, lng: {{ v[1] }}},
+          map: map,
+          icon: icon
+        });
+         {% endfor %}
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
+    </script>
+
+</body>
+</html>
+

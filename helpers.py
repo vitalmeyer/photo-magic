@@ -2,8 +2,9 @@ from pathlib import Path
 
 from models import ImageMetaData
 
-
+# list contains list of names (urls) and nested list of position values (lat, lng)
 def get_photo_values_for_display(photo_folder):
+
     list_photo_name = get_list_photo_urls(photo_folder)
     list_image_meta_data = get_list_image_meta_data(list_photo_name)
 

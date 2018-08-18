@@ -17,6 +17,7 @@ app.logger.addHandler(file_handler)
 app.logger.setLevel(logging.INFO)
 # Global var
 PHOTO_FOLDER = Path(app.config["PHOTO_FOLDER_PATH"])
+GOOGLE_API_KEY = app.config["GOOGLE_API_KEY"]
 
 
 #######
@@ -33,36 +34,60 @@ def loggertest():
 @app.route('/')
 def hello_world():
     return "Hello World!"
+
+
 # bar command
 @app.route('/bar')
 def hello_bar():
     return 'Hello World BAR99!'
+
 # test pyhtml
 @app.route('/pyhtml')
 def hello_pyhtml():
     return get_pyhtml_dummypage()
 
+# photo template - some photo-icons in Lyon
+@app.route("/photo01")
+def photo01():
+    google_api_key = GOOGLE_API_KEY
+    list_photo_values_to_display = get_photo_values_for_display(PHOTO_FOLDER)
 
-# photo template
-@app.route("/photo")
-def photo():
+    # return render_template("photo01.html", mylist = list_photo_values_to_display)
+    print_log(str(list_photo_values_to_display))
+    return render_template('photo01.html', list_photo_values_to_display=list_photo_values_to_display,
+                           google_api_key = google_api_key )
+
+# photo template - a not-working structure CSS grid template (nav, header, footer, ....)
+@app.route("/photo02")
+def photo02():
+    google_api_key = GOOGLE_API_KEY
 
     list_photo_values_to_display = get_photo_values_for_display(PHOTO_FOLDER)
 
-    # return render_template("photo.html", mylist = list_photo_values_to_display)
+    # return render_template("photo01.html", mylist = list_photo_values_to_display)
     print_log(str(list_photo_values_to_display))
-    return render_template('photo.html', data=list_photo_values_to_display )
+    return render_template('photo02.html', list_photo_values_to_display=list_photo_values_to_display,
+                           google_api_key = google_api_key )
 
-# photo template
-@app.route("/photo2")
-def photo2():
+# on-click - loading big photo
+@app.route('/photo03')
+def photo03():
+    google_api_key = GOOGLE_API_KEY
+    return render_template('photo03.html', google_api_key = google_api_key)
 
-    list_photo_values_to_display = get_photo_values_for_display(PHOTO_FOLDER)
+# some markers with listers, something is not working here...
+@app.route('/photo04')
+def photo04():
+    google_api_key = GOOGLE_API_KEY
+    return render_template('photo04.html', google_api_key = google_api_key)
 
-    # return render_template("photo.html", mylist = list_photo_values_to_display)
-    print_log(str(list_photo_values_to_display))
-    return render_template('photo2.html', data=list_photo_values_to_display )
+# photo template - some photo-icons in Lyon
+@app.route("/photo05")
+def photo05():
+    google_api_key = GOOGLE_API_KEY
 
+    return render_template('photo05.html', list_photo_values_to_display=get_photo_values_for_display(PHOTO_FOLDER),
+                           google_api_key = google_api_key )
 
 # call of main
 if __name__ == '__main__':

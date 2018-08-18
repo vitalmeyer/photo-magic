@@ -23,13 +23,12 @@
   <body>
     <div id="map"></div>
     <script type="text/javascript">
-        // var username = {{ data.username }}
         // var username = "my username";
 
       // This example adds a marker to indicate the position of Bondi Beach in Sydney,
       // Australia.
       function initMap() {
-         //alert(username)
+         // alert("hi")
         // alert( 'Hello, world!' );
         // alert(mylist);
 
@@ -41,7 +40,7 @@
         // var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 
          {%
-            for n,v in data
+            for n,v in list_photo_values_to_display
 
           %}
          var icon = {
@@ -59,7 +58,7 @@
       }
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr5Ne6HCgpaaVpb3L12wxcaGutythUn8A&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
     </script>
   </body>
 </html>

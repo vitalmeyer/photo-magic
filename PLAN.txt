@@ -1,0 +1,20 @@
+
+> 2 Bilder mit dynamischem Pfeil über dem Weg
+
+> Gibt es die Möglichkeit, aus den Koordinaten den Ort zu finden? JA! https://www.latlong.net/Show-Latitude-Longitude.html
+lat=45.764094444444446 lon=4.826833333333333
+ADRESS: Vieux Lyon, 69005 Lyon, Frankreich
+USE this: (https://developers.google.com/maps/documentation/javascript/reference/geocoder)
+geocode(request, callback)
+Parameters:
+request:  GeocoderRequest
+callback:  function(Array<GeocoderResult>, GeocoderStatus)
+Return Value:  None
+Geocode a request.
+
+
+> IPTC - Metadaten in Bilder schreiben, inklusive (Document title + Caption) - python library existiert
+
+
+
+> Videos einbauen
