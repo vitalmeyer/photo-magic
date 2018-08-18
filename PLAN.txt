@@ -3,7 +3,7 @@
 
 > mouseOver --> grosses image!
 A. statische html-Seite
-B. dynamisch
+B. dynamisch - ODER?
 
 > handle photos without GPS info!
 
