@@ -1,6 +1,10 @@
 
 > 2 Bilder mit dynamischem Pfeil über dem Weg OK!
 
+> mouseOver --> grosses image!
+A. statische html-Seite
+B. dynamisch
+
 > handle photos without GPS info!
 
 > Gibt es die Möglichkeit, aus den Koordinaten den Ort zu finden? JA! https://www.latlong.net/Show-Latitude-Longitude.html
